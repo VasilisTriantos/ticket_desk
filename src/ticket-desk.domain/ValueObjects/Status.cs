@@ -1,0 +1,23 @@
+namespace ticket_desk.domain.ValueObjects;
+
+public sealed class Status(string state) : IEquatable<Status>
+{
+    public  string State { get; } = state;
+    public static readonly Status Open = new("Open");
+    public static readonly Status InProgress = new("InProgress");
+    public static readonly Status Closed = new("Closed");
+
+
+    public bool Equals(Status? other) {
+        return other is not null && State == other.State;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Status);
+    }
+
+    public override int GetHashCode() => State.GetHashCode();
+    public override string ToString() => State.ToString();
+
+}
