@@ -2,22 +2,21 @@ namespace ticket_desk.core.LookupSpecifications;
 
 using domain.Entities;
 
-public sealed class TicketStatusOrPrioritySpecification(string searchTerm)
+public static class TicketStatusOrPrioritySpecification
 {
-    private readonly string _searchTerm = searchTerm.Trim();
-
-    public bool IsSatisfiedBy(Ticket ticket)
+    public static bool IsSatisfiedBy(Ticket ticket, string searchTerm)
     {
         ArgumentNullException.ThrowIfNull(ticket);
+        ArgumentException.ThrowIfNullOrWhiteSpace(searchTerm);
 
-        var values = new object?[]
-        {
-            ticket.Priority,
-            ticket.Status
-        };
+        var normalizedSearchTerm = searchTerm.Trim();
 
-        return values.Any(value => value?.ToString()?.Contains(
-            _searchTerm,
-            StringComparison.OrdinalIgnoreCase) == true);
+        return ticket.Priority.ToString()
+            .Contains(
+                   normalizedSearchTerm,
+                   StringComparison.OrdinalIgnoreCase) ||
+               ticket.Status.ToString().Contains(
+                   normalizedSearchTerm,
+                   StringComparison.OrdinalIgnoreCase);
     }
 }

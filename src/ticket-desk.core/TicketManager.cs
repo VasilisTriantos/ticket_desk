@@ -57,22 +57,20 @@ public class TicketManager
         return _tickets.AsReadOnly().FirstOrDefault(specification.IsSatisfiedBy);
     }
 
-    public Ticket? EscalateTicketPriority(string? ticketId)
+    public Ticket EscalateTicketPriority(string? ticketId)
     {
-        var specification = new TicketCanChangePrioritySpecification(ticketId);
-        var ticket = _tickets.FirstOrDefault(specification.IsSatisfiedBy)
-            ?? throw new KeyNotFoundException($"Ticket with ID '{ticketId}' not found or is closed.");
+        var ticket = GetTicketById(ticketId ?? string.Empty)
+            ?? throw new KeyNotFoundException($"Ticket with ID '{ticketId}' was not found.");
         
         ticket.EscalatePriority();
         
         return ticket;
     }
 
-    public Ticket? DeescalateTicketPriority(string? ticketId)
+    public Ticket DeescalateTicketPriority(string? ticketId)
     {
-        var specification = new TicketCanChangePrioritySpecification(ticketId);
-        var ticket = _tickets.FirstOrDefault(specification.IsSatisfiedBy)
-            ?? throw new KeyNotFoundException($"Ticket with ID '{ticketId}' not found or is closed.");
+        var ticket = GetTicketById(ticketId ?? string.Empty)
+            ?? throw new KeyNotFoundException($"Ticket with ID '{ticketId}' was not found.");
         
         ticket.DeescalatePriority();
         
@@ -84,10 +82,8 @@ public class TicketManager
         if (string.IsNullOrWhiteSpace(searchTerm))
             return _tickets.AsReadOnly();
 
-        var specification = new TicketStatusOrPrioritySpecification(searchTerm);
-
         return _tickets
-            .Where(specification.IsSatisfiedBy)
+            .Where(ticket => TicketStatusOrPrioritySpecification.IsSatisfiedBy(ticket, searchTerm))
             .ToList()
             .AsReadOnly();
     }

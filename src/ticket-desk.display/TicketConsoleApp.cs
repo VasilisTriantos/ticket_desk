@@ -13,7 +13,27 @@ class TicketConsoleApp
         while (IsRunning)
         {
             DisplayMenu();
-            HandleMenuSelection();
+            try
+            {
+                HandleMenuSelection();
+            }
+            catch (ArgumentException ex)
+            {
+                OutputHandler.ShowError(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                OutputHandler.ShowError(ex.Message);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                OutputHandler.ShowError(ex.Message);
+            }
+            catch (Exception)
+            {
+                OutputHandler.ShowError("An unexpected error occurred.");
+            }
+
             if (!IsRunning)
             {
                 break;
@@ -42,23 +62,16 @@ class TicketConsoleApp
         switch (choice?.ToUpper())
         {
             case "1":
-                try
-                {
-                    Console.WriteLine("Creating a ticket...");
+                Console.WriteLine("Creating a ticket...");
 
-                    var inputModel = new InputModel(
-                        InputHandler.ReadInput("Enter ticket title: ") ?? "Default Title",
-                        InputHandler.ReadInput("Enter ticket description: ") ?? "Default Description",
-                        InputHandler.ReadInput("Enter ticket priority:  (High, Medium, Low)")
-                    );
+                var inputModel = new InputModel(
+                    InputHandler.ReadInput("Enter ticket title: ") ?? "Default Title",
+                    InputHandler.ReadInput("Enter ticket description: ") ?? "Default Description",
+                    InputHandler.ReadInput("Enter ticket priority:  (High, Medium, Low)")
+                );
 
-                    core.CreateTicket(inputModel.Title, inputModel.Description, inputModel.Priority);
-                    Console.WriteLine("Ticket created successfully.");
-                }
-                catch (ArgumentException ex)
-                {
-                    Console.WriteLine($"Could not create a ticket \n{ex.Message}");
-                }
+                core.CreateTicket(inputModel.Title, inputModel.Description, inputModel.Priority);
+                Console.WriteLine("Ticket created successfully.");
                 break;
             case "2":
                 var allTickets = core.GetAllTickets();
@@ -70,28 +83,14 @@ class TicketConsoleApp
                 OutputHandler.ShowSingleTicket(ticket);
                 break;
             case "4":
-                try
-                {
-                    var changeTicketId = InputHandler.ReadInput("Enter ticket ID to change priority: ");
-                    core.EscalateTicketPriority(changeTicketId);
-                    Console.WriteLine("Ticket priority updated successfully.");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"There was a problem with changing the ticket priority\n{ex.Message}");
-                }
+                var changeTicketId = InputHandler.ReadInput("Enter ticket ID to change priority: ");
+                core.EscalateTicketPriority(changeTicketId);
+                Console.WriteLine("Ticket priority updated successfully.");
                 break;
             case "5":
-                try
-                {
-                    var changeTicketId = InputHandler.ReadInput("Enter ticket ID to change priority: ");
-                    core.DeescalateTicketPriority(changeTicketId);
-                    Console.WriteLine("Ticket priority updated successfully.");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"There was a problem with changing the ticket priority\n{ex.Message}");
-                }
+                changeTicketId = InputHandler.ReadInput("Enter ticket ID to change priority: ");
+                core.DeescalateTicketPriority(changeTicketId);
+                Console.WriteLine("Ticket priority updated successfully.");
                 break;
             case "6":
                 var searchTerm = InputHandler.ReadInput("Enter search term: ");
@@ -108,19 +107,12 @@ class TicketConsoleApp
                 OutputHandler.ShowTicketStatistics(ticketStatistics);
                 break;
             case "9":
-                try
-                {
-                    var closeTicketId = InputHandler.ReadInput("Enter ticket ID to close: ");
+                var closeTicketId = InputHandler.ReadInput("Enter ticket ID to close: ");
 
-                    var message = core.CloseTicket(closeTicketId) ?
-                        "Ticket closed successfully." :
-                        "Failed to close the ticket. It may not exist or is already closed.";
-                    Console.WriteLine(message);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"There was a problem with closing the ticket\n{ex.Message}");
-                }
+                var message = core.CloseTicket(closeTicketId) ?
+                    "Ticket closed successfully." :
+                    "Failed to close the ticket. It may not exist or is already closed.";
+                Console.WriteLine(message);
                 break;
             case "Q":
                 IsRunning = false;

@@ -6,6 +6,12 @@ using ticket_desk.domain.Entities;
 public static class OutputHandler
 {
     private const string Separator = "--------------------------------------------------";
+
+    public static void ShowError(string message)
+    {
+        Console.WriteLine($"Error: {message}");
+    }
+
     public static void ShowSingleTicket(Ticket? ticket)
     {
         Console.WriteLine(Separator);
