@@ -2,7 +2,7 @@ namespace ticket_desk.core.LookupSpecifications;
 
 using domain.Entities;
 
-public sealed class TicketSearchSpecification(string searchTerm)
+public sealed class TicketStatusOrPrioritySpecification(string searchTerm)
 {
     private readonly string _searchTerm = searchTerm.Trim();
 

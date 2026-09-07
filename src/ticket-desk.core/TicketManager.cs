@@ -84,7 +84,7 @@ public class TicketManager
         if (string.IsNullOrWhiteSpace(searchTerm))
             return _tickets.AsReadOnly();
 
-        var specification = new TicketSearchSpecification(searchTerm);
+        var specification = new TicketStatusOrPrioritySpecification(searchTerm);
 
         return _tickets
             .Where(specification.IsSatisfiedBy)
