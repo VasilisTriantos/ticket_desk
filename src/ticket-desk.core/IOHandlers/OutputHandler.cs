@@ -16,7 +16,7 @@ public static class OutputHandler
         }
         else
         {
-            Console.WriteLine($"ID: {ticket.Id} || Title: {ticket.Title} || Description: {ticket.Description} || Priority: {ticket.Priority} || Status: {ticket.Status}");
+            Console.WriteLine($"ID: {ticket.Id} || Title: {ticket.Title} || Description: {ticket.Description} || Priority: {ticket.Priority} || Status: {ticket.Status} || CreatedAt: {ticket.CreatedAt} || ClosedAt: {ticket.ClosedAt}");
         }
         
         Console.WriteLine(Separator);

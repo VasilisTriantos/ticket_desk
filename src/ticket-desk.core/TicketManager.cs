@@ -18,11 +18,25 @@ public class TicketManager
         return ticket;
     }
 
-    public bool CloseTicket(Guid ticketId)
+    public bool CloseTicket(string? ticketId)
     {
-        var ticket = _tickets.FirstOrDefault(t => t.Id == ticketId);
-        
-        if (ticket == null)
+        if (string.IsNullOrWhiteSpace(ticketId))
+            return false;
+
+        Ticket? ticket;
+
+        try
+        {
+            var specification = new TicketSearchByIdSpecification(ticketId);
+            ticket = _tickets.SingleOrDefault(specification.IsSatisfiedBy);
+        }
+        catch (InvalidOperationException)
+        {
+            throw new InvalidOperationException(
+                "The ticket ID is ambiguous. Please enter more of the ID.");
+        }
+
+        if (ticket is null)
             return false;
 
         ticket.Close();

@@ -102,6 +102,19 @@ Show:
 * closed
 * count by priority
 
+## Decisions Made During Creation
+
+* Ticket creation is designed for fast entry with minimal interaction. No
+  extra confirmation step is required after entering the ticket details.
+* Users may enter any substring of a ticket ID for any ticket-ID lookup or
+  action.
+* Closing a ticket refuses to proceed when the substring matches more than one
+  ticket, preventing an ambiguous destructive action.
+* Viewing a specific ticket by ID provides a detailed view with its
+  description and closure date when available.
+* Viewing all tickets may include those additional details to improve the
+  end-user experience.
+
 ## Constraints
 
 Use:

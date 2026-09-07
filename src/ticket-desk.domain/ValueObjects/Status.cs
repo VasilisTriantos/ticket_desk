@@ -1,13 +1,15 @@
 namespace ticket_desk.domain.ValueObjects;
 
-public sealed class Status(string state) : IEquatable<Status>
+public sealed class Status : IEquatable<Status>
 {
-    public  string State { get; } = state;
+    public string State { get; }
     public static readonly Status Open = new("Open");
-    public static readonly Status InProgress = new("InProgress");
     public static readonly Status Closed = new("Closed");
 
-
+    private Status(string state)
+    {
+        State = state;
+    }
     public bool Equals(Status? other) {
         return other is not null && State == other.State;
     }
