@@ -1,4 +1,4 @@
-namespace ticket_desk.core.IOHandlers;
+namespace ticket_desk.display.IOHandlers;
 
 public static class InputHandler
 {

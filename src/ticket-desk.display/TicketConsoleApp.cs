@@ -2,7 +2,7 @@ namespace ticket_desk.display;
 
 using ticket_desk.core;
 using ticket_desk.core.InputModel;
-using ticket_desk.core.IOHandlers;
+using ticket_desk.display.IOHandlers;
 
 class TicketConsoleApp
 {

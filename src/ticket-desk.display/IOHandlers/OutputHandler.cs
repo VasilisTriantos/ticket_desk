@@ -1,4 +1,4 @@
-namespace ticket_desk.core.IOHandlers;
+namespace ticket_desk.display.IOHandlers;
 
 using ticket_desk.domain.Dto;
 using ticket_desk.domain.Entities;
