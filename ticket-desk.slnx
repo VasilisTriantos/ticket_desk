@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/ticket-desk.core/ticket-desk.core.csproj" />
     <Project Path="src/ticket-desk.display/ticket-desk.display.csproj" />
     <Project Path="src/ticket-desk.domain/ticket-desk.domain.csproj" />
   </Folder>

@@ -1,2 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using TicketDesk.Display;
+
+var app = new TicketConsoleApp();
+app.Run(args);

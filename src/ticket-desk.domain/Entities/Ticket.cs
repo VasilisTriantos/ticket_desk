@@ -13,20 +13,21 @@ public sealed class Ticket
     public DateTime? ClosedAt { get; private set; }
 
 
-    private Ticket (string title, string description, PriorityLevel? priority, Status status)
+    private Ticket (string title, string description, PriorityLevel priority, Status status)
     {
         ValidateTicket(title, description);
-        Id = Guid.NewGuid();
+        Id = Guid.CreateVersion7();
         Title = title;
         Description = description;
-        Priority = priority ?? PriorityLevel.Medium;
+        Priority = priority;
         Status = status;
         CreatedAt = DateTime.UtcNow;
         ClosedAt = null;
     }
 
-    public static Ticket Create (string title, string description, PriorityLevel? priority)
+    public static Ticket Create (string title, string description, PriorityLevel priority)
     {
+
         return new Ticket(title, description, priority, Status.Open);
     }
 
@@ -37,6 +38,22 @@ public sealed class Ticket
 
         Status = Status.Closed;
         ClosedAt = DateTime.UtcNow;
+    }
+
+    public void EscalatePriority()
+    {
+        if (Status == Status.Closed)
+            throw new InvalidOperationException("Cannot change priority of a closed ticket.");
+
+        Priority = Priority.Escalate();
+    }
+
+    public void DeescalatePriority()
+    {
+        if (Status == Status.Closed)
+            throw new InvalidOperationException("Cannot change priority of a closed ticket.");
+
+        Priority = Priority.Deescalate();
     }
 
     private static void ValidateTicket(string title, string description)
